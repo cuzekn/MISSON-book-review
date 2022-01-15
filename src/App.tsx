@@ -1,27 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import './dist.css'
+import "./styles.css";
+import { BookCard } from "./components/BookCard";
+import { useAllBooks } from "./hooks/useAllBooks";
 
-function App() {
+export default function App() {
+  const { getBooks, bookLists, loading, error } = useAllBooks();
+
+  const onClickFfetchBook = () => getBooks();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="text-green-600 text-7">
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="w-screen h-full bg-yellow-900">
+      <button onClick={onClickFfetchBook} className="p-3 mt-3 ml-3 bg-teal-700 rounded-lg tex3t-yellow-100 text-yellow-50 text-bold">データ取得</button>
+      <br />
+      {error ? (
+        <p style={{ color: "red" }}>データの取得に失敗しました</p>
+      ) : loading ? (
+        <p className="text-yellow-50">Loading...</p>
+      ) : (
+        <>
+          {bookLists.map((book) => (
+            <BookCard key={book.id} book={book} />
+          ))}
+        </>
+      )}
     </div>
   );
 }
-
-export default App;
